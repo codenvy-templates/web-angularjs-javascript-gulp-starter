@@ -1,11 +1,13 @@
 var gulp = require('gulp')
     , usemin = require('gulp-usemin')
     , uglify = require('gulp-uglify')
-    , clean = require('gulp-clean')
+    , rimraf = require('rimraf')
     , minifyHtml = require('gulp-minify-html')
     , minifyCss = require('gulp-minify-css')
     , compass = require('gulp-compass')
     , header = require('gulp-header')
+    , imagemin = require('gulp-imagemin')
+    , ngmin = require('gulp-ngmin')
     , refresh = require('gulp-livereload')
     , jshint = require('gulp-jshint')
     , rev = require('gulp-rev')
@@ -28,12 +30,12 @@ var banner = ['/**',
   ''].join('\n');
 
 // Compilation tasks
-gulp.task('clean:build', function() {
-    return gulp.src('./build', { read: false })
-        .pipe(clean({ force: true }));
+gulp.task('clean', function (cb) {
+    rimraf.sync('./build');
+    cb(null);
 });
 
-gulp.task('compass:build', function () {
+gulp.task('compass', function () {
     return gulp.src('./app/assets/stylesheets/*.scss')
         .pipe(compass({
             css: '.tmp/assets/stylesheets',
@@ -54,14 +56,26 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('fail'));
 });
 
-gulp.task('compile', ['clean:build', 'compass:build', 'lint'], function() {
+gulp.task('views', function() {
+    return gulp.src('./app/assets/views/**/*.html')
+        .pipe(minifyHtml({ empty: true }))
+        .pipe(gulp.dest('./build/assets/views'));
+});
+
+gulp.task('images', function() {
+    return gulp.src('./app/assets/images/**/*.*')
+        .pipe(imagemin())
+        .pipe(gulp.dest('./build/assets/images'));
+});
+
+gulp.task('compile', ['clean', 'views', 'images', 'compass', 'lint'], function() {
     var projectHeader = header(banner, { pkg : pkg } );
-    
+
     gulp.src('./app/*.html')
         .pipe(usemin({
             css:          [minifyCss(), rev(), projectHeader],
             html:         [minifyHtml({ empty: true })],
-            js:           [uglify(), rev(), projectHeader],
+            js:           [ngmin(), uglify(), rev(), projectHeader],
             js_libs:      [rev()]
         }))
         .pipe(gulp.dest('build/'));
@@ -69,13 +83,13 @@ gulp.task('compile', ['clean:build', 'compass:build', 'lint'], function() {
 
 // Serve tasks
 gulp.task('reload:html', function () {
-    return gulp.src('./app/*.html')
+    return gulp.src('./app/**/*.html')
         .pipe(refresh(lrserver));
 })
 
 gulp.task('watch', function () {
     gulp.watch('app/assets/stylesheets/**/*.scss', ['compass:build']);
-    gulp.watch('app/*.html', ['reload:html']);
+    gulp.watch('app/**/*.html', ['reload:html']);
 });
 
 gulp.task('serve:app', ['watch'], function() {

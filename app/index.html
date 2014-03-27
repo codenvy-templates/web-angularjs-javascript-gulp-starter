@@ -6,16 +6,7 @@
         <!-- endbuild -->
     </head>
     <body ng-app="app">
-        <h1>Gulp! Starter Project.</h1>
-
-        <div class="contents">
-            <h2>This project contains the following libraries:</h2>
-            <ul>
-                <li>jQuery</li>
-                <li>AngularJS</li>
-                <li>Compass</li>
-            </ul>
-        </div>
+        <div ng-view></div>
 
         <!-- build:js_libs js/libs.js -->
         <script src="assets/components/jquery/dist/jquery.min.js"></script>
@@ -25,6 +16,7 @@
 
         <!-- build:js js/app.js -->
         <script src="assets/javascripts/main.js"></script>
+        <script src="assets/javascripts/controllers/home.js"></script>
         <!-- endbuild -->
     </body>
 </html>
