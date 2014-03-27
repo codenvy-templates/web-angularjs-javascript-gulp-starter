@@ -28,7 +28,9 @@
     "gulp-ngmin": "^0.1.2",
     "gulp-rimraf": "0.0.9",
     "rimraf": "^2.2.6",
-    "gulp-imagemin": "^0.1.5"
+    "gulp-imagemin": "^0.1.5",
+    "gulp-inject": "^0.4.1",
+    "gulp-angular-templatecache": "^1.1.1"
   },
   "dependencies": {
     "express": "^3.5.1"

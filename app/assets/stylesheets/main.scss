@@ -36,6 +36,13 @@ h1 {
     max-width: 300px;
     margin: 0 auto;
 
+    &.creator {
+        img {
+            margin-top: -50px;
+            border-radius: 10px;
+        }
+    }
+
     p {
         font-size: 0.75em;
         margin: 0 0 10px;

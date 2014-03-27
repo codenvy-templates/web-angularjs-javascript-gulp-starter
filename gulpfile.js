@@ -6,7 +6,9 @@ var gulp = require('gulp')
     , minifyCss = require('gulp-minify-css')
     , compass = require('gulp-compass')
     , header = require('gulp-header')
+    , inject = require('gulp-inject')
     , imagemin = require('gulp-imagemin')
+    , templateCache = require('gulp-angular-templatecache')
     , ngmin = require('gulp-ngmin')
     , refresh = require('gulp-livereload')
     , jshint = require('gulp-jshint')
@@ -58,8 +60,11 @@ gulp.task('lint', function() {
 
 gulp.task('views', function() {
     return gulp.src('./app/assets/views/**/*.html')
-        .pipe(minifyHtml({ empty: true }))
-        .pipe(gulp.dest('./build/assets/views'));
+        .pipe(templateCache({
+            module: 'app',
+            root: 'assets/views'
+        }))
+        .pipe(gulp.dest('./.tmp/assets/javascripts'));
 });
 
 gulp.task('images', function() {
@@ -72,6 +77,12 @@ gulp.task('compile', ['clean', 'views', 'images', 'compass', 'lint'], function()
     var projectHeader = header(banner, { pkg : pkg } );
 
     gulp.src('./app/*.html')
+        .pipe(inject(gulp.src('./.tmp/assets/javascripts/templates.js', {read: false}),
+            {
+                starttag: '<!-- inject:templates:js -->',
+                ignorePath: '/.tmp'
+            }
+        ))
         .pipe(usemin({
             css:          [minifyCss(), rev(), projectHeader],
             html:         [minifyHtml({ empty: true })],
@@ -88,7 +99,7 @@ gulp.task('reload:html', function () {
 })
 
 gulp.task('watch', function () {
-    gulp.watch('app/assets/stylesheets/**/*.scss', ['compass:build']);
+    gulp.watch('app/assets/stylesheets/**/*.scss', ['compass']);
     gulp.watch('app/**/*.html', ['reload:html']);
 });
 
