@@ -5,6 +5,7 @@ var gulp = require('gulp')
     , minifyHtml = require('gulp-minify-html')
     , minifyCss = require('gulp-minify-css')
     , compass = require('gulp-compass')
+    , header = require('gulp-header')
     , refresh = require('gulp-livereload')
     , jshint = require('gulp-jshint')
     , rev = require('gulp-rev')
@@ -15,6 +16,16 @@ var gulp = require('gulp')
 // Constants
 var SERVER_PORT = 5000;
 var LIVERELOAD_PORT = 35729;
+
+// Header configuration
+var pkg = require('./package.json');
+var banner = ['/**',
+  ' * <%= pkg.name %> - <%= pkg.description %>',
+  ' * @version v<%= pkg.version %>',
+  ' * @link <%= pkg.homepage %>',
+  ' * @license <%= pkg.license %>',
+  ' */',
+  ''].join('\n');
 
 // Compilation tasks
 gulp.task('clean:build', function() {
@@ -32,7 +43,6 @@ gulp.task('compass:build', function () {
         .on('error', function(err) {
             console.log(err.message);
         })
-        .pipe(jshint.reporter('jshint-stylish'))
         .pipe(gulp.dest('./.tmp'))
         .pipe(refresh(lrserver));
 });
@@ -45,14 +55,16 @@ gulp.task('lint', function() {
 });
 
 gulp.task('compile', ['clean:build', 'compass:build', 'lint'], function() {
-  gulp.src('./app/*.html')
-    .pipe(usemin({
-        css:          [minifyCss(), rev()],
-        html:         [minifyHtml({ empty: true })],
-        js:           [uglify(), rev()],
-        js_libs:      [rev()]
-    }))
-    .pipe(gulp.dest('build/'));
+    var projectHeader = header(banner, { pkg : pkg } );
+    
+    gulp.src('./app/*.html')
+        .pipe(usemin({
+            css:          [minifyCss(), rev(), projectHeader],
+            html:         [minifyHtml({ empty: true })],
+            js:           [uglify(), rev(), projectHeader],
+            js_libs:      [rev()]
+        }))
+        .pipe(gulp.dest('build/'));
 });
 
 // Serve tasks
@@ -60,6 +72,7 @@ gulp.task('reload:html', function () {
     return gulp.src('./app/*.html')
         .pipe(refresh(lrserver));
 })
+
 gulp.task('watch', function () {
     gulp.watch('app/assets/stylesheets/**/*.scss', ['compass:build']);
     gulp.watch('app/*.html', ['reload:html']);

@@ -1,11 +1,13 @@
 {
-  "name": "gulp-test",
+  "name": "gulp-angularjs-starter-project",
   "version": "0.0.0",
-  "description": "A test project to test if gulp really works.",
+  "description": "A started project using AngularJS and Compass.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
   },
+  "repository": "https://github.com/wlepinski/gulp-angularjs-starter-project",
+  "homepage": "https://github.com/wlepinski/gulp-angularjs-starter-project",
   "author": "William Lepinski",
   "license": "MIT",
   "devDependencies": {
@@ -21,7 +23,8 @@
     "gulp-jshint": "^1.5.1",
     "jshint-stylish": "^0.1.5",
     "gulp-compass": "^1.1.8",
-    "gulp-livereload": "^1.2.0"
+    "gulp-livereload": "^1.2.0",
+    "gulp-header": "^1.0.2"
   },
   "dependencies": {
     "express": "^3.5.1"
