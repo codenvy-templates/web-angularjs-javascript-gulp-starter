@@ -12,12 +12,15 @@ The compilation phase has some steps described below:
   - Refresh the livereload server
   - If there's something wrong it stops the stream and show all compilation errors on console.
 - Lint all JS files
-  - If there's something wrong it stops the stream and show all linting errors on console. 
+  - If there's something wrong it stops the stream and show all linting errors on console.
 - Creates a new header to be concatenated on every CSS and JS file.
 - Instrospect all HTML files and find all compilation comments.
   - For both CSS and JS we're minifying (uglyfing for JS) and revisioning all files present inside a compilation comment.
+  - For JS files, runs ngMin.
   - Concatenate and insert a revision for all JS libraries.
-- Minify all HTML files removing comments and line breaks.
+- Copy views files and minify them.
+- Copy images files and optimize them.
+- Minify all HTML files.
 - Drop the compilated HTML file on the build directory.
 
 ### Serve tasks
