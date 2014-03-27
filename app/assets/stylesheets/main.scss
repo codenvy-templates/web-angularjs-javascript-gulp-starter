@@ -2,6 +2,11 @@
 @import 'compass/reset';
 
 body {
-    background: yellow;
     padding: 20px;
+    font: 16px/1.5em Helvetica, sans-serif;
+}
+
+h1 {
+    font-size: 2em;
+    line-height: 1.5em;
 }

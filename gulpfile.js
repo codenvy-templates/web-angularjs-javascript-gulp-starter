@@ -29,6 +29,10 @@ gulp.task('compass:build', function () {
             sass: 'app/assets/stylesheets',
             image: 'app/assets/images'
         }))
+        .on('error', function(err) {
+            console.log(err.message);
+        })
+        .pipe(jshint.reporter('jshint-stylish'))
         .pipe(gulp.dest('./.tmp'))
         .pipe(refresh(lrserver));
 });
@@ -52,13 +56,16 @@ gulp.task('compile', ['clean:build', 'compass:build', 'lint'], function() {
 });
 
 // Serve tasks
+gulp.task('reload:html', function () {
+    return gulp.src('./app/*.html')
+        .pipe(refresh(lrserver));
+})
 gulp.task('watch', function () {
     gulp.watch('app/assets/stylesheets/**/*.scss', ['compass:build']);
-    // gulp.watch('app/**/*.html', ['html']);
-    // gulp.watch('app/assets/**', ['assets']);
+    gulp.watch('app/*.html', ['reload:html']);
 });
 
-gulp.task('serve:app', function() {
+gulp.task('serve:app', ['watch'], function() {
     var server = express();
     server.use(livereload({
       port: LIVERELOAD_PORT
