@@ -25,11 +25,11 @@ The compilation phase has some steps described below:
 
 ### Serve tasks
 
-There's two serve tasks available to be used. The <code>grunt serve:app</code> and the <code>grunt serve:build</code>.
+There's two serve tasks available to be used. The <code>gulp serve:app</code> and the <code>gulp serve:build</code>.
+g
+The <code>gulp serve:app</code> is meant to be used during development. It uses a Express server pointing to the <code>app</code> folder and configures a Livereload server to automatically refresh files. This task depends on another task called watch, that does exactly what you expect it to do.
 
-The <code>grunt serve:app</code> is meant to be used during development. It uses a Express server pointing to the <code>app</code> folder and configures a Livereload server to automatically refresh files. This task depends on another task called watch, that does exactly what you expect it to do.
-
-The <code>grunt serve:build</code> is meant to be used to test the compilation process. It uses a Express server pointing to the <code>build</code> folder. No Livereload server is started on this task.
+The <code>gulp serve:build</code> is meant to be used to test the compilation process. It uses a Express server pointing to the <code>build</code> folder. No Livereload server is started on this task.
 
 ### Contributing
 
