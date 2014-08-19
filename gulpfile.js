@@ -105,14 +105,14 @@ gulp.task('watch', function () {
 
 gulp.task('serve:app', ['watch'], function() {
     var server = express();
-    server.use(livereload({
+    /*server.use(livereload({
       port: LIVERELOAD_PORT
-    }));
+    }));*/
     server.use(express.static('./.tmp'));
     server.use(express.static('./app'));
     server.listen(SERVER_PORT);
 
-    lrserver.listen(LIVERELOAD_PORT);
+    //lrserver.listen(LIVERELOAD_PORT);
 });
 
 gulp.task('serve:build', function() {
@@ -122,3 +122,4 @@ gulp.task('serve:build', function() {
 });
 
 gulp.task('default', ['compile']);
+
