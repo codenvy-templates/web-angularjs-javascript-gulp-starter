@@ -1,1 +1,1 @@
-{"type":"AngularJS","attributes":{},"builders":{},"runners":{"default":"javascript-webapp-gulp","configs":{}}}
+{"type":"AngularJS","attributes":{},"runners":{"default":"system:/javascript-webapp-gulp/default","configs":{}},"builders":{}}
